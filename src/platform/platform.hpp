@@ -26,6 +26,15 @@ void unregisterHotKey();
 void captureHotKey(std::function<void(std::optional<HotKey>)> done);
 void cancelHotKeyCapture();
 
+/// True where the desktop owns global shortcuts: the app only asks for one, the user picks the
+/// keys in a system dialog, and `displayName` describes what the desktop reports.
+bool systemOwnsHotKey();
+/// Opens that dialog.
+void configureHotKey();
+/// Called when what the desktop reports about the shortcut changes.
+void setHotKeyStatusHandler(std::function<void()> handler);
+std::optional<std::string> hotKeyNotice();
+
 void hideApp();
 void activateApp();
 bool appIsActive();
@@ -38,6 +47,7 @@ struct StatusItemActions {
     std::function<void()> quit;
 };
 
+bool hasMenuBarIcon();
 /// Keeps a menu bar icon while `enabled`, and leaves the Dock while no window is on screen.
 void setHideToMenuBar(bool enabled, const StatusItemActions& actions);
 void updateDockIcon();

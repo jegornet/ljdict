@@ -7,7 +7,7 @@ A lightweight dictionary app in C++20 with GTK 4 (gtkmm). It reads StarDict dict
 - Search across all enabled dictionaries as you type, ignoring case and diacritics
 - Article pane with stress marks and clickable cross-references
 - Search history of up to 500 words
-- Global shortcut to show or hide the window, `⌘⇧D` by default
+- Global shortcut to show or hide the window, `⌘⇧D` by default on macOS and Alt+Shift+D on Linux
 - Settings (`⌘,`): dictionary folder, turning dictionaries on and off, dragging them to set the article order, launch at login, start minimized, hiding to the menu bar
 
 Dictionaries are loaded from `~/.dict` by default, including subfolders.
@@ -45,7 +45,7 @@ Packages for the latest Fedora release and the latest Ubuntu LTS are built in Do
 
 Install with `sudo dnf install ./ljdict-*.rpm` or `sudo apt install ./ljdict_*.deb`. On a Linux machine you can also build natively: `rpmbuild` from `packaging/fedora/ljdict.spec`, or `dpkg-buildpackage -b` from the source tree, which has `debian/` at its root.
 
-On Linux the global shortcut and the menu bar icon are not available. Launch at login writes an XDG autostart entry to `~/.config/autostart` that runs the current binary. Closing the window or pressing Esc hides it and the app keeps running; launching LjDict again shows it.
+On Linux the global shortcut goes through the desktop's GlobalShortcuts portal (GNOME 48 and later, KDE Plasma): on first launch the desktop asks which keys to use, suggesting Alt+Shift+D, and clicking the shortcut in Settings opens that dialog again where the desktop supports it (GNOME changes the keys in its own Settings, on the page for LjDict). The menu bar icon is not available. Launch at login writes an XDG autostart entry to `~/.config/autostart` that runs the current binary. Closing the window or pressing Esc hides it and the app keeps running; launching LjDict again shows it.
 
 ## Settings
 
@@ -55,4 +55,4 @@ Settings and history are stored in `~/.config/ljdict/settings.ini` (or under `XD
 
 - Compressed `.dict.dz` and `.idx.gz` files are not supported.
 - Images in articles are not shown, and of inline CSS only text color and left margin are.
-- On Linux the code builds with `platform_stub.cpp`, without the global shortcut and menu bar icon. The packages were checked only by installing them in containers and starting the app under Xvfb.
+- On Linux the code builds with `platform_stub.cpp`, without the menu bar icon. The packages were checked only by installing them in containers and starting the app under Xvfb, The global shortcut and launch at login were also checked on GNOME 50, but not on KDE.

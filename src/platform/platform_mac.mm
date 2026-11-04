@@ -202,6 +202,12 @@ void cancelHotKeyCapture() {
     captureMonitor = nil;
 }
 
+bool systemOwnsHotKey() { return false; }
+bool hasMenuBarIcon() { return true; }
+void configureHotKey() {}
+void setHotKeyStatusHandler(std::function<void()>) {}
+std::optional<std::string> hotKeyNotice() { return std::nullopt; }
+
 void hideApp() {
     [NSApp hide:nil];
 }

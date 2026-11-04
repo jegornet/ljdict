@@ -115,15 +115,25 @@ Gtk::Widget* SettingsWindow::buildShortcut() {
     hotKeyTaken_.add_css_class("error");
     hotKeyTaken_.set_visible(false);
     box->append(hotKeyTaken_);
+    if (platform::systemOwnsHotKey()) {
+        resetHotKey_.set_visible(false);
+        box->append(*makeCaption("The desktop asks which keys to use and keeps them in its own settings."));
+    }
+    hotKeyNotice_.set_xalign(0);
+    hotKeyNotice_.set_wrap(true);
+    hotKeyNotice_.add_css_class("dim-label");
+    box->append(hotKeyNotice_);
 
-    hideToMenuBar_.set_active(model_.settings().hideToMenuBar);
-    hideToMenuBar_.property_active().signal_changed().connect([this] {
-        model_.settings().hideToMenuBar = hideToMenuBar_.get_active();
-        model_.settings().save();
-        hideToMenuBarChanged_();
-    });
-    box->append(*makeSwitchRow("Hide to menu bar", hideToMenuBar_));
-    box->append(*makeCaption("Shows an icon in the menu bar and removes LjDict from the Dock while its windows are hidden."));
+    if (platform::hasMenuBarIcon()) {
+        hideToMenuBar_.set_active(model_.settings().hideToMenuBar);
+        hideToMenuBar_.property_active().signal_changed().connect([this] {
+            model_.settings().hideToMenuBar = hideToMenuBar_.get_active();
+            model_.settings().save();
+            hideToMenuBarChanged_();
+        });
+        box->append(*makeSwitchRow("Hide to menu bar", hideToMenuBar_));
+        box->append(*makeCaption("Shows an icon in the menu bar and removes LjDict from the Dock while its windows are hidden."));
+    }
     return makeGroup("Show or hide window", *box);
 }
 
@@ -257,11 +267,15 @@ void SettingsWindow::refreshBooks() {
 void SettingsWindow::refreshHotKey() {
     recorder_.set_label(isRecording_ ? "Press shortcut…" : platform::displayName(model_.settings().hotKey));
     resetHotKey_.set_sensitive(!(model_.settings().hotKey == platform::defaultHotKey()));
+    auto notice = platform::hotKeyNotice();
+    hotKeyNotice_.set_text(notice.value_or(""));
+    hotKeyNotice_.set_visible(notice.has_value());
 }
 
 /// Click, then press the new shortcut. Esc cancels. The shortcut is off meanwhile, so that it can
 /// be pressed again without triggering.
 void SettingsWindow::startRecording() {
+    if (platform::systemOwnsHotKey()) return platform::configureHotKey();
     if (isRecording_) return;
     isRecording_ = true;
     refreshHotKey();

@@ -14,6 +14,7 @@ public:
 
     void refresh();
     void setHotKeyTaken(bool taken) { hotKeyTaken_.set_visible(taken); }
+    void refreshHotKey();
 
 private:
     Gtk::Widget* buildDictionaries();
@@ -24,7 +25,6 @@ private:
     void applyPath();
     void chooseFolder();
     void refreshBooks();
-    void refreshHotKey();
     void startRecording();
     void stopRecording();
     void setHotKey(const platform::HotKey& key);
@@ -42,6 +42,7 @@ private:
     Gtk::Button recorder_;
     Gtk::Button resetHotKey_{"Reset"};
     Gtk::Label hotKeyTaken_{"Another application is using this shortcut."};
+    Gtk::Label hotKeyNotice_;
     Gtk::Switch hideToMenuBar_;
     Gtk::Switch launchAtLogin_;
     Gtk::Switch startMinimized_;

@@ -49,6 +49,9 @@ void Application::on_startup() {
     Gtk::Window::set_default_icon_name(get_id());
     hold(); // the app keeps running with no window, so the global shortcut stays alive
     platform::setReopenHandler([this] { showWindow(); });
+    platform::setHotKeyStatusHandler([this] {
+        if (settingsWindow_) settingsWindow_->refreshHotKey();
+    });
 
     mainWindow_ = Gtk::make_managed<MainWindow>(model_);
     add_window(*mainWindow_);
@@ -156,8 +159,15 @@ void Application::toggleWindow() {
 
 void Application::showWindow() {
     platform::activateApp();
-    mainWindow_->present();
+    present(*mainWindow_);
     mainWindow_->focusSearch();
+}
+
+/// gtkmm takes a window out of the application when it is hidden, and the app's shortcuts with it.
+/// `Gtk::Window::set_remove_on_hide` would avoid that, but it needs gtkmm 4.22.
+void Application::present(Gtk::Window& window) {
+    if (!window.get_application()) add_window(window);
+    window.present();
 }
 
 void Application::showSettings() {
@@ -167,7 +177,7 @@ void Application::showSettings() {
     }
     settingsWindow_->refresh();
     platform::activateApp();
-    settingsWindow_->present();
+    present(*settingsWindow_);
 }
 
 void Application::showAbout() {

@@ -13,6 +13,11 @@ constexpr int headerHeight = 34;
 constexpr unsigned articleDelayMs = 50;
 /// How long an article has to stay on screen to count as looked up, so typing doesn't fill the history.
 constexpr unsigned historyDelayMs = 2000;
+#ifdef __APPLE__
+constexpr const char* settingsKey = "⌘,";
+#else
+constexpr const char* settingsKey = "Ctrl+,";
+#endif
 
 }
 
@@ -270,9 +275,9 @@ void MainWindow::showPlaceholder(const std::string& query) {
     if (model_.isLoading()) {
         message = "Loading dictionaries…";
     } else if (model_.library().books().empty()) {
-        message = "No dictionaries found in " + model_.dictionaryPath() + ". Choose a folder in Settings (⌘,).";
+        message = "No dictionaries found in " + model_.dictionaryPath() + ". Choose a folder in Settings (" + settingsKey + ").";
     } else if (model_.enabledBooks().empty()) {
-        message = "All dictionaries are turned off. Turn some on in Settings (⌘,).";
+        message = std::string("All dictionaries are turned off. Turn some on in Settings (") + settingsKey + ").";
     } else if (!folding::trim(query).empty()) {
         message = "“" + query + "” not found.";
     }

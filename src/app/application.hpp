@@ -25,6 +25,7 @@ private:
     void updateStatusItem();
     void toggleWindow();
     void showWindow();
+    void present(Gtk::Window& window);
     void showSettings();
     void showAbout();
 

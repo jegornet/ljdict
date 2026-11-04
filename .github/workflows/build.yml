@@ -1,0 +1,79 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: brew install gtkmm4 ninja pkgconf
+      # build-dmg.sh configures and builds the bundle, so the tests run after it.
+      - run: ./scripts/build-dmg.sh
+      - run: ctest --test-dir build --output-on-failure
+      - name: Name the image by version
+        run: |
+          version=$(sed -n 's/^project(LjDict VERSION \([^ ]*\).*/\1/p' CMakeLists.txt)
+          mkdir -p dist
+          mv build/LjDict.dmg "dist/LjDict-$version.dmg"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: dist/*.dmg
+
+  fedora:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      # The spec runs the tests in %check.
+      - run: ./scripts/build-rpm.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fedora
+          path: |
+            build/packages/*.rpm
+            !build/packages/*debug*.rpm
+
+  ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      # dh runs the tests through ctest.
+      - run: ./scripts/build-deb.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ubuntu
+          path: build/packages/*.deb
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [macos, fedora, ubuntu]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check that the tag matches the version
+        run: |
+          version=$(sed -n 's/^project(LjDict VERSION \([^ ]*\).*/\1/p' CMakeLists.txt)
+          if [ "${GITHUB_REF_NAME#v}" != "$version" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match version $version in CMakeLists.txt" >&2
+            exit 1
+          fi
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" dist/* --title "LjDict ${GITHUB_REF_NAME#v}" --generate-notes

@@ -26,6 +26,8 @@ ctest --test-dir build
 
 ## Install
 
+Releases on GitHub carry `LjDict-<version>.dmg` (Apple silicon), the Fedora rpm and the Ubuntu deb (x86_64), built by `.github/workflows/build.yml` when a `v<version>` tag is pushed.
+
 Open `LjDict.dmg` and drag LjDict to Applications. The app is ad-hoc signed and not notarized, so on a Mac other than the one that built it, macOS refuses to open a copy downloaded from the internet. Remove the quarantine flag once:
 
 ```sh

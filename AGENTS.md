@@ -12,6 +12,8 @@ cmake -S . -B build -G Ninja -DCMAKE_CXX_COMPILER=/usr/bin/clang++ -DCMAKE_OBJCX
 cmake --build build && ctest --test-dir build
 ```
 
+- `.github/workflows/build.yml` runs the three package scripts on every push to `main` and every pull request. A `v<version>` tag also publishes a release with the dmg, rpm and deb; the tag must match the CMake version. The dmg is built on `macos-latest`, so it runs only on that macOS version or later.
+
 - Pass `/usr/bin/clang++` as the compiler, as `build-dmg.sh` does. Plain `clang` on the author's machine resolves to a swiftly toolchain.
 - The CMake target is the bundle itself, `build/LjDict.app`, ad-hoc signed after every link. There is no bare binary, because outside a bundle macOS shows a generic "exec" icon in the Dock and setting the icon from code does not change what the system reports.
 - `build-dmg.sh` copies every non-system library into `Contents/Frameworks` of a staged copy and rewrites references to `@rpath/<linked name>`; it fails if any Homebrew path is left. GTK's runtime data (icon themes, translations) are not copied: the UI is English, the icons it uses are built into GTK, and `Gtk::FileDialog` is the native panel, so no GSettings schemas are needed.

@@ -1,6 +1,6 @@
 # LjDict
 
-A lightweight dictionary app in C++20 with GTK 4 (gtkmm). It reads StarDict dictionaries (`.ifo` + `.idx` + `.dict`). This is a rewrite of the AppKit version; macOS is the supported system.
+A lightweight dictionary app in C++20 with GTK 4 (gtkmm). It reads StarDict dictionaries (`.ifo` + `.idx` + `.dict`).
 
 ## Features
 
@@ -45,7 +45,7 @@ Packages for the latest Fedora release and the latest Ubuntu LTS are built in Do
 
 Install with `sudo dnf install ./ljdict-*.rpm` or `sudo apt install ./ljdict_*.deb`. On a Linux machine you can also build natively: `rpmbuild` from `packaging/fedora/ljdict.spec`, or `dpkg-buildpackage -b` from the source tree, which has `debian/` at its root.
 
-On Linux the global shortcut, the menu bar icon and launch at login are not available. Closing the window or pressing Esc hides it and the app keeps running; launching LjDict again shows it.
+On Linux the global shortcut and the menu bar icon are not available. Launch at login writes an XDG autostart entry to `~/.config/autostart` that runs the current binary. Closing the window or pressing Esc hides it and the app keeps running; launching LjDict again shows it.
 
 ## Settings
 
@@ -55,4 +55,4 @@ Settings and history are stored in `~/.config/ljdict/settings.ini` (or under `XD
 
 - Compressed `.dict.dz` and `.idx.gz` files are not supported.
 - Images in articles are not shown, and of inline CSS only text color and left margin are.
-- On Linux the code builds with `platform_stub.cpp`, without the global shortcut, menu bar icon and login item. The packages were checked only by installing them in containers and starting the app under Xvfb.
+- On Linux the code builds with `platform_stub.cpp`, without the global shortcut and menu bar icon. The packages were checked only by installing them in containers and starting the app under Xvfb.

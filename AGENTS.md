@@ -56,7 +56,7 @@ Letters with no Unicode decomposition are listed in `overrideFor`. `й` folds to
 
 **Window.** Closing only hides the window and `hold()` keeps the app running, so the global shortcut stays alive. GTK does not restore window size or panes, so `saveGeometry` does.
 
-**Linux.** There is no global shortcut or status item, so a hidden window comes back through a second launch: the app is unique there (D-Bus), and the second instance activates the first. On macOS it stays `NON_UNIQUE` and uses the reopen handler. The stub's `hideApp` hides every toplevel, so Esc works.
+**Linux.** There is no global shortcut or status item, so a hidden window comes back through a second launch: the app is unique there (D-Bus), and the second instance activates the first. On macOS it stays `NON_UNIQUE` and uses the reopen handler. The stub's `hideApp` hides every toplevel, so Esc works. Launch at login is an XDG autostart file named by the application id; its `Exec` is the running binary from `/proc/self/exe`, so a build outside the PATH starts too. Turning it off deletes the file.
 
 **Dark mode.** GTK does not follow the macOS appearance, so `followSystemAppearance` copies it on window activation. A change made while the app is active shows up at the next activation. Set the color scheme through the typed `property_gtk_interface_color_scheme()`: `set_property` with the C enum logs a GObject critical.
 

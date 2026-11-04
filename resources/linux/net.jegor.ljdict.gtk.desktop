@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=LjDict
+Comment=Lightweight dictionary
+Exec=ljdict
+Icon=net.jegor.ljdict.gtk
+Terminal=false
+Categories=Office;Dictionary;GTK;
+Keywords=dictionary;stardict;translate;
+StartupNotify=true

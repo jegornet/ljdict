@@ -1,0 +1,14 @@
+Source: ljdict
+Section: text
+Priority: optional
+Maintainer: Yegor Gluhov <git@jegor.net>
+Build-Depends: debhelper-compat (= 13), cmake, ninja-build, g++, pkgconf, libgtkmm-4.0-dev
+Standards-Version: 4.7.2
+Rules-Requires-Root: no
+
+Package: ljdict
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Lightweight dictionary
+ LjDict searches all enabled StarDict dictionaries as you type, ignoring case
+ and diacritics, and shows the articles side by side.

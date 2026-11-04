@@ -55,4 +55,4 @@ Settings and history are stored in `~/.config/ljdict/settings.ini` (or under `XD
 
 - Compressed `.dict.dz` and `.idx.gz` files are not supported.
 - Images in articles are not shown, and of inline CSS only text color and left margin are.
-- On Linux the code builds with `platform_stub.cpp`, without the menu bar icon. The packages were checked only by installing them in containers and starting the app under Xvfb, The global shortcut and launch at login were also checked on GNOME 50, but not on KDE.
+- On Linux the code builds with `platform_stub.cpp`, without the menu bar icon. The packages were checked only by installing them in containers and starting the app under Xvfb, The global shortcut and launch at login were also checked on GNOME 50 and KDE Plasma 6.8.

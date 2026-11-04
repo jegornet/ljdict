@@ -176,7 +176,9 @@ void createSession() {
         });
 }
 
-/// Wayland raises a window only for an activation token, and the key press earned one.
+/// Wayland raises a window only for an activation token, and the key press earned one. KDE sends
+/// none, and KWin then gives focus only to a window that is newly mapped, so a window left behind
+/// another app's is hidden first and shown again.
 void onActivated(GDBusConnection*, const char*, const char*, const char*, const char*, GVariant* parameters, gpointer) {
     const char* session;
     const char* id;
@@ -185,13 +187,16 @@ void onActivated(GDBusConnection*, const char*, const char*, const char*, const 
     g_variant_get(parameters, "(&o&st@a{sv})", &session, &id, &timestamp, &options);
     if (session == portal.session && std::string_view(id) == shortcutId && portal.onPress) {
         const char* token = nullptr;
-        if (g_variant_lookup(options, "activation_token", "&s", &token)) {
-            GList* windows = gtk_window_list_toplevels();
-            for (GList* item = windows; item; item = item->next) {
-                if (GTK_IS_APPLICATION_WINDOW(item->data)) gtk_window_set_startup_id(GTK_WINDOW(item->data), token);
-            }
-            g_list_free(windows);
+        bool hasToken = g_variant_lookup(options, "activation_token", "&s", &token);
+        GList* windows = gtk_window_list_toplevels();
+        bool appIsActive = false;
+        for (GList* item = windows; item; item = item->next) appIsActive |= gtk_window_is_active(GTK_WINDOW(item->data));
+        for (GList* item = windows; item; item = item->next) {
+            if (!GTK_IS_APPLICATION_WINDOW(item->data)) continue;
+            if (hasToken) gtk_window_set_startup_id(GTK_WINDOW(item->data), token);
+            else if (!appIsActive) gtk_widget_set_visible(GTK_WIDGET(item->data), false);
         }
+        g_list_free(windows);
         portal.onPress();
     }
     g_variant_unref(options);

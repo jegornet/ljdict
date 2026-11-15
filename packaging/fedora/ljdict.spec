@@ -1,5 +1,5 @@
 Name:           ljdict
-Version:        1.0
+Version:        1.1
 Release:        1%{?dist}
 Summary:        Lightweight dictionary
 License:        Unlicense
@@ -41,5 +41,8 @@ appstream-util validate-relax --nonet %{buildroot}%{_metainfodir}/net.jegor.ljdi
 %{_datadir}/icons/hicolor/*/apps/net.jegor.ljdict.gtk.png
 
 %changelog
+* Sun Nov 15 2026 Yegor Gluhov <git@jegor.net> - 1.1-1
+- Neutral white background in the light theme
+
 * Wed Nov 04 2026 Yegor Gluhov <git@jegor.net> - 1.0-1
 - First package

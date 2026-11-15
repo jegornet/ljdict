@@ -20,13 +20,13 @@ constexpr auto applicationFlags = Gio::Application::Flags::DEFAULT_FLAGS;
 #endif
 
 constexpr const char* styleSheet = R"css(
-.content { background-color: #fefce9; color: #1c1c1c; }
+.content { background-color: #ffffff; color: #1c1c1c; }
 .dark .content { background-color: #242320; color: #e6e4da; }
-textview.article text { background-color: #fefce9; color: #1c1c1c; }
+textview.article text { background-color: #ffffff; color: #1c1c1c; }
 .dark textview.article text { background-color: #242320; color: #e6e4da; }
 textview.article { font-size: 15px; }
 .word-list row { padding: 0; min-height: 20px; }
-.word-list row:selected { background-color: #d9d6c3; color: #1c1c1c; }
+.word-list row:selected { background-color: #dadada; color: #1c1c1c; }
 .dark .word-list row:selected { background-color: #4a4843; color: #e6e4da; }
 .word { font-size: 14px; padding: 0 4px; min-height: 20px; }
 .caption { font-size: 11px; }

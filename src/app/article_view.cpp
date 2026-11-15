@@ -25,7 +25,7 @@ struct Palette {
     const char* transcription;
 };
 
-constexpr Palette light{"#1c1c1c", "#efeddc", "#5c5a4c", "#0b57b0", "#1a7a35", "#3f5f8a", "#6b6b6b", "#8a3b12"};
+constexpr Palette light{"#1c1c1c", "#f0f0f0", "#5c5c5c", "#0b57b0", "#1a7a35", "#3f5f8a", "#6b6b6b", "#8a3b12"};
 constexpr Palette dark{"#e6e4da", "#33322d", "#b5b2a4", "#7db4f5", "#7fcb8f", "#9dbbe0", "#a3a198", "#e0a37e"};
 
 Glib::ustring indentTag(int level) {

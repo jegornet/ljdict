@@ -1,3 +1,9 @@
+ljdict (1.1) resolute; urgency=medium
+
+  * Neutral white background in the light theme.
+
+ -- Yegor Gluhov <git@jegor.net>  Sun, 15 Nov 2026 12:00:00 +0000
+
 ljdict (1.0) resolute; urgency=medium
 
   * First package.
